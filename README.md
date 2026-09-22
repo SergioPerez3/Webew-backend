@@ -1,145 +1,130 @@
-# Backend Proyecto Final - Sergio
+# 🛍️ Webew — Backend (Proyecto Full Stack)
 
-API REST desarrollada con Node.js, Express y MongoDB para una web de compra-venta.
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat&logo=vitest&logoColor=white)
+![JWT](https://img.shields.io/badge/Auth-JWT-black?style=flat&logo=jsonwebtokens)
+
+API REST completa para **Webew**, una plataforma de **compra-venta de productos**, desarrollada como proyecto final del bootcamp Full Stack de Neoland. Incluye autenticación de usuarios, gestión de productos, sistema de favoritos y una suite de tests de integración.
+
+🔗 **API en producción:** [https://backend-proyecto-final-sergio.onrender.com](https://backend-proyecto-final-sergio.onrender.com)
 
 ---
 
-# Características
+## ✨ Características
 
-- CRUD completo de productos
-- Registro de usuarios
-- Inicio de sesión con JWT
+- CRUD completo de productos, con categorías y productos destacados
+- Registro e inicio de sesión de usuarios con JWT
 - Contraseñas encriptadas con bcrypt
-- Autenticación mediante Bearer Token
-- MongoDB Atlas
-- Seeder de datos iniciales
-- Tests con Vitest y Supertest
+- Autenticación mediante Bearer Token en rutas protegidas
+- **Sistema de favoritos** por usuario (añadir, listar, eliminar uno o todos)
+- Seeder de datos iniciales para poblar la base de datos
+- Tests de integración con Vitest y Supertest
+- Desplegado en Render con MongoDB Atlas
 
----
+## 🛠 Tecnologías utilizadas
 
-# 🛠 Tecnologías utilizadas
-
-- Node.js
-- Express
-- MongoDB Atlas
-- Mongoose
-- JWT
+- Node.js + Express
+- MongoDB Atlas + Mongoose
+- JWT (jsonwebtoken)
 - bcryptjs
-- dotenv
-- cors
-- Vitest
-- Supertest
+- dotenv, cors
+- Vitest + Supertest (testing)
 
----
+## 📁 Estructura del proyecto
 
-## Instalación
+```
+backend-proyecto-final-sergio/
+├── src/
+│   ├── config/
+│   │   └── db.js
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── favorite.controller.js
+│   │   └── product.controller.js
+│   ├── middlewares/
+│   │   └── auth.middleware.js
+│   ├── models/
+│   │   ├── Favorite.js
+│   │   ├── Product.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── auth.router.js
+│   │   ├── favorite.router.js
+│   │   └── product.router.js
+│   └── seeders/
+│       └── product.seeder.js
+├── test/
+│   ├── app.test.js
+│   ├── auth.test.js
+│   ├── product.test.js
+│   └── setup.js
+├── .env.example
+├── .gitignore
+├── app.js
+├── index.js
+├── package.json
+└── README.md
+```
+
+## ⚙️ Instalación
 
 1. Clona el repositorio:
-
    ```bash
    git clone <repository_url>
-   ```
-
-2. Navega al directorio del proyecto:
-
-   ```bash
    cd backend-proyecto-final-sergio
    ```
 
-3. Instala las dependencias:
-
+2. Instala las dependencias:
    ```bash
    npm install
    ```
 
-# Variables de entorno
+3. Crea un archivo `.env` usando `.env.example` como referencia:
+   ```env
+   PORT=3000
+   MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/tudb
+   JWT_SECRET=mi-clave-secreta
+   ```
 
-Crear un archivo `.env` utilizando como referencia `.env.example`.
-
-## .env.example
-
-```env
-PORT=
-MONGODB_URI=
-JWT_SECRET=
-```
-
-## Ejemplo
-
-```env
-PORT=3000
-MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/moviesdb
-JWT_SECRET=mi-clave-secreta
-```
-
----
-
-# Ejecutar en desarrollo
+## ▶️ Uso
 
 ```bash
-npm run dev
+npm run dev     # desarrollo
+npm start       # producción
+npm test        # tests
 ```
 
----
-
-# Ejecutar en producción
-
-```bash
-npm start
-```
-
----
-
-# Ejecutar tests
-
-```bash
-npm test
-```
-
----
-
-# Cargar datos iniciales
-
-Si quieres cargar datos de ejemplo, puedes ejecutar este seeder
+Cargar datos de ejemplo en la base de datos:
 
 ```bash
 node src/seeders/product.seeder.js
 ```
 
+Una vez en marcha, la API está disponible en `http://localhost:<PORT>/api`.
+
 ---
 
-# Endpoints
+## 📡 Endpoints
 
- Una vez que el servidor esté en funcionamiento, puedes acceder a la API a través de http://localhost:<PORT>/api, donde <PORT> es el puerto que configuraste en tu archivo .env.
+### Home
 
-## Home
-
-### GET /
-
+#### `GET /`
 Devuelve un mensaje de bienvenida.
 
-### Respuesta Exitosa
-
-#### Status: 200 OK
-
+- `200 OK`
 ```json
-{
-  "message": "Bienvenido a la API de compra-venta"
-}
+{ "message": "Bienvenido a la API de compra-venta" }
 ```
 
 ---
 
-# Autenticación
+### 🔐 Autenticación
 
-## Registro
+#### `POST /api/auth/register`
 
-### POST /api/auth/register
-
-Registra un nuevo usuario.
-
-### Body
-
+**Body:**
 ```json
 {
   "name": "Sergio Pérez",
@@ -148,497 +133,132 @@ Registra un nuevo usuario.
 }
 ```
 
-### Respuesta Exitosa
+- `201 Created` — `{ "message": "Usuario registrado correctamente" }`
+- `400 Bad Request` — `"Todos los campos son obligatorios"` / `"El correo ya esta"`
+- `500 Internal Server Error`
 
-#### Status: 201 Created
+#### `POST /api/auth/login`
 
+**Body:**
 ```json
-{
-  "message": "Usuario registrado correctamente"
-}
+{ "email": "juan@example.com", "password": "123456" }
 ```
 
-### Posibles Errores
-
-#### Status: 400 Bad Request
-
-```json
-{
-  "message": "Todos los campos son obligatorios"
-}
-```
-
-#### Status: 400 Bad Request
-
-```json
-{
-  "message": "El correo ya esta"
-}
-```
-
-#### Status: 500 Internal Server Error
-
-```json
-{
-  "message": "Error interno del servidor"
-}
-```
-
----
-
-## Login
-
-### POST /api/auth/login
-
-Inicia sesión y devuelve un token JWT.
-
-### Body
-
-```json
-{
-  "email": "juan@example.com",
-  "password": "123456"
-}
-```
-
-### Respuesta Exitosa
-
-#### Status: 200 OK
-
+- `200 OK`
 ```json
 {
   "message": "Inicio de sesión correctamente",
   "token": "jwt_generado_aquí",
-  "user": {
-    "_id": "id_del_usuario",
-    "name": "Sergio Pérez",
-    "email": "example2@example.com"
-  }
+  "user": { "_id": "...", "name": "Sergio Pérez", "email": "example2@example.com" }
 }
 ```
-
-### Posibles Errores
-
-#### Status: 400 Bad Request
-
-```json
-{
-  "message": "Todos los campos son obligatorios"
-}
-```
-
-#### Status: 422 Unprocessable Entity
-
-```json
-{
-  "message": "El correo no es válido"
-}
-```
-
-#### Status: 422 Unprocessable Entity
-
-```json
-{
-  "message": "Contraseña muy corta, mínimo 6 caracteres"
-}
-```
-
-#### Status: 401 Unauthorized
-
-```json
-{
-  "message": "Credenciales inválidas"
-}
-```
-
-#### Status: 500 Internal Server Error
-
-```json
-{
-  "message": "Error interno del servidor"
-}
-```
+- `400 Bad Request` — `"Todos los campos son obligatorios"`
+- `422 Unprocessable Entity` — `"El correo no es válido"` / `"Contraseña muy corta, mínimo 6 caracteres"`
+- `401 Unauthorized` — `"Credenciales inválidas"`
+- `500 Internal Server Error`
 
 ---
 
-# Productos
+### 📦 Productos
 
-## Obtener todos las productos
-
-### GET /api/products
-
+#### `GET /api/products`
 Devuelve todos los productos.
+- `200 OK` — array de productos
+- `500 Internal Server Error` — `"Error al obtener los productos"`
 
-### Respuesta Exitosa
+#### `GET /api/products/categories`
+Devuelve las categorías disponibles.
+- `200 OK` — `["Tecnología", "Moda", "Hogar", "Deportes"]`
+- `500 Internal Server Error`
 
-#### Status: 200 OK
+#### `GET /api/products/featured`
+Devuelve los productos destacados.
+- `200 OK` — `{ "products": [...] }`
+- `500 Internal Server Error`
 
+#### `GET /api/products/:id`
+Devuelve un producto por ID.
+- `200 OK` — objeto del producto
+- `404 Not Found` — `"Product not found"`
+- `500 Internal Server Error`
+
+#### `POST /api/products` 🔒
+**Body:**
 ```json
-[
-  {
-    "_id": "6a3ac14a1e25453df7afc53b",
-    "name": "Aspiradora Dyson V10",
-    "price": 260,
-    "category": "Hogar y jardín",
-    "image": "Aspiradora.jpg",
-    "featured": true,
-    "createdAt": "2024-03-05T00:00:00.000Z",
-    "updatedAt": "2026-06-23T17:24:26.625Z"
-  }
-]
+{ "name": "iPhone 15", "price": 999, "category": "Tecnología y electrónica", "image": "https://...", "featured": false }
 ```
+- `201 Created`
+- `422 Unprocessable Entity` — `"All fields are required"`
+- `401 Unauthorized` — `"No autorizado"`
+- `500 Internal Server Error`
 
-#### Status: 500 Internal Server Error
+#### `PUT /api/products/:id` 🔒
+Actualiza los campos indicados del producto.
+- `200 OK`
+- `422 Unprocessable Entity`
+- `404 Not Found` — `"CastError: Invalid ID"`
+- `500 Internal Server Error`
 
-```json
-{
-  "message": "Error al obtener los productos"
-}
-```
+#### `DELETE /api/product/:id` 🔒
+- `200 OK` — `{ "message": "Producto borrado correctamente" }`
+- `401 Unauthorized` — `"Credenciales inválidas"`
+- `404 Not Found` — `"Producto no encontrado"`
+- `500 Internal Server Error`
 
 ---
 
-## Obtener categorias de productos
+### ⭐ Favoritos
 
-### GET /api/products/categories
+Todas las rutas de favoritos requieren autenticación (`Authorization: Bearer TOKEN`) y actúan sobre los favoritos del usuario autenticado.
 
-Devuelve todas las categorías disponibles.
+#### `GET /api/favorites` 🔒
+Devuelve la lista de favoritos del usuario.
 
-### Respuesta Exitosa
-
-#### Status: 200 OK
-
+- `200 OK`
 ```json
-["Tecnología", "Moda", "Hogar", "Deportes"]
+{ "User": "userId", "products": [ { "product": { "...": "producto populado" } } ] }
+```
+- Si el usuario no tiene favoritos aún, devuelve `products: []` en vez de error.
+
+#### `POST /api/favorites` 🔒
+Añade un producto a favoritos.
+
+**Body:**
+```json
+{ "product": "productId" }
 ```
 
-### Posibles Errores
-
-#### Status: 500 Internal Server Error
-
+- `201 Created`
 ```json
-{
-  "message": "Error al obtener las categorias"
-}
+{ "message": "Product added to favorites", "favorites": { "...": "favoritos actualizados y populados" } }
 ```
+- `422 Unprocessable Entity` — `"Product ID is required"`
+- `404 Not Found` — `"Product not found"`
+- `400 Bad Request` — `"The product is already listed in favorites"`
+- `500 Internal Server Error`
+
+#### `DELETE /api/favorites/:productId` 🔒
+Elimina un producto concreto de favoritos.
+
+- `200 OK` — `{ "message": "Product removed from favorites", "favorites": { ... } }`
+- `404 Not Found` — `"Favorites not found"`
+- `500 Internal Server Error`
+
+#### `DELETE /api/favorites` 🔒 / `DELETE /api/favorites/clear` 🔒
+Vacía todos los favoritos del usuario.
+
+- `200 OK` — `{ "message": "Favorites cleared" }`
+- `404 Not Found` — `"No favorites found"`
+- `500 Internal Server Error`
 
 ---
 
-## Obtener productos destacados
+## 🔮 Roadmap
 
-### GET /api/products/featured
+- [ ] Carrito de compras (próximamente)
+- [ ] Paginación en el listado de productos
+- [ ] Documentación interactiva con Swagger
 
-Devuelve todos los productos marcados como destacados.
+## 👤 Autor
 
-### Respuesta Exitosa
-
-#### Status: 200 OK
-
-```json
-{
-  "products": [
-    {
-      "_id": "...",
-      "name": "PlayStation 5",
-      "price": 499,
-      "category": "Tecnología",
-      "image": "https://...",
-      "featured": true
-    }
-  ]
-}
-```
-
-### Posibles Errores
-
-#### Status: 500 Internal Server Error
-
-```json
-{
-  "message": "Error al obtener los productos destacados"
-}
-```
-
----
-
-## Obtener producto por ID
-
-### GET /api/products/:id
-
-Devuelve un producto por su ID.
-
-### Respuesta Exitosa
-
-#### Status: 200 OK
-
-```json
-{
-  "_id": "...",
-  "name": "iPhone 15",
-  "price": 999,
-  "category": "Tecnología",
-  "image": "https://...",
-  "featured": false,
-  "description": "..."
-}
-```
-
-### Posibles Errores
-
-#### Status: 404 Not Found
-
-```json
-{
-  "message": "Product not found"
-}
-```
-
-#### Status: 500 Internal Server Error
-
-```json
-{
-  "message": "Error fetching product"
-}
-```
-
----
-
-## Crear producto
-
-### POST /api/products
-
-Requiere autenticación.
-
-### Headers
-
-```txt
-Authorization: Bearer TOKEN
-```
-
-### Body
-
-```json
-{
-  "name": "iPhone 15",
-  "price": 999,
-  "category": "Tecnología y electrónica",
-  "image": "https://...",
-  "featured": false
-}
-```
-
-### Respuesta Exitosa
-
-#### Status: 201 Created
-
-```json
-{
-  "_id": "...",
-  "name": "iPhone 15",
-  "price": 999,
-  "category": "Tecnología y electrónica",
-  "image": "https://...",
-  "featured": false
-}
-```
-
-### Posibles Errores
-
-#### Status: 422 Unprocessable Entity
-
-```json
-{
-  "message": "All fields are required"
-}
-```
-
-#### Status: 401 Unauthorized
-
-```json
-{
-  "message": "No autorizado"
-}
-```
-
-#### Status: 500 Internal Server Error
-
-```json
-{
-  "message": "Error creating product"
-}
-```
-
----
-
-## Actualizar producto
-
-### PUT /api/products/:id
-
-Requiere autenticación.
-
-### Headers
-
-```txt
-Authorization: Bearer TOKEN
-```
-
-Traes el producto por el ID y lo modificas (ejemplo)
-
-```json
-{
-  "name": "iPhone 15 Pro",
-  "price": 1199
-}
-```
-```json
-{
-  "name": "iPhone 15 Pro",
-  "price": 3000
-}
-```
-### Respuesta Exitosa
-
-#### Status: 200 OK
-
-```json
-{
-  "_id": "...",
-  "name": "iPhone 15 Pro",
-  "price": 3000,
-  "category": "Tecnología",
-  "image": "https://...",
-  "featured": false
-}
-```
-
-### Posibles Errores
-
-
-#### Status: 422 Unprocessable Entity
-
-```json
-{
-  "message": "El nombre tiene que ser un string"
-}
-```
-
-
-
-#### Status: 422 Unprocessable Entity
-
-```json
-{
-  "message": "Validation error message"
-}
-```
-
-#### Status: 404 Not Found
-
-```json
-{
-  "message": "CastError: Invalid ID"
-}
-```
-
-#### Status: 500 Internal Server Error
-
-```json
-{
-  "message": "Error interno del servidor al actualizar producto"
-}
-```
-
----
-
-## Eliminar producto
-
-### DELETE /api/product/:id
-
-Requiere autenticación.
-
-### Headers
-
-```txt
-Authorization: Bearer TOKEN
-```
-
-### Respuesta Exitosa
-
-#### Status: 200 OK
-
-```json
-{
-  "message": "Producto borrado correctamente"
-}
-```
-
-### Posibles Errores
-
-#### Status: 401 Unauthorized
-
-```json
-{
-  "message": "Credenciales inválidas"
-}
-```
-
-#### Status: 404 Not Found
-
-```json
-{
-  "message": "Producto no encontrado"
-}
-```
-
-#### Status: 500 Internal Server Error
-
-```json
-{
-  "message": "Error interno del servidor al borrar el producto"
-}
-```
-
----
-
-# Favoritos
-
-## Obtener todos los favoritos
-
-
-
-# Deploy
-
-Backend desplegado en Render.
-
-```txt
-https://mi-api.onrender.com
-```
-
----
-
-# Estructura del proyecto
-
-```txt
-src/
-│
-├── config/
-├── controllers/
-├── middlewares/
-├── models/
-├── routes/
-├── seeders/
-│
- tests/
-│
-app.js
-│
-index.js
-```
-
----
-
-# Autor
-
-Proyecto desarrollado como práctica del curso Full Stack de Neoland.
-
-Autor: Sergio Pérez Pérez
+**Sergio Pérez Pérez** — Proyecto desarrollado como práctica final del curso Full Stack de Neoland.
