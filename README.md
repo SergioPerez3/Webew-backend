@@ -256,7 +256,6 @@ Vacía todos los favoritos del usuario.
 ## 🔮 Roadmap
 
 - [ ] Carrito de compras (próximamente)
-- [ ] Paginación en el listado de productos
 - [ ] Documentación interactiva con Swagger
 
 ## 👤 Autor
