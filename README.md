@@ -1,4 +1,4 @@
-# 🛍️ Webew — Backend (Proyecto Full Stack)
+# 🛍️ Webew — Backend ( Proyecto Full Stack )
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white)
@@ -18,7 +18,7 @@ API REST completa para **Webew**, una plataforma de **compra-venta de productos*
 - Registro e inicio de sesión de usuarios con JWT
 - Contraseñas encriptadas con bcrypt
 - Autenticación mediante Bearer Token en rutas protegidas
-- **Sistema de favoritos** por usuario (añadir, listar, eliminar uno o todos)
+- Sistema de favoritos por usuario (añadir, listar, eliminar uno o todos)
 - Seeder de datos iniciales para poblar la base de datos
 - Tests de integración con Vitest y Supertest
 - Desplegado en Render con MongoDB Atlas
